@@ -1,4 +1,4 @@
 package com.example.demo.example;
 
-public class PostService {
+public class SampleService {
 }
