@@ -1,4 +1,4 @@
 package com.example.demo.example;
 
-public interface PostRepository {
+public interface SampleRepository {
 }
