@@ -1,4 +1,3 @@
 package com.example.demo.example;
 
-public class SampleResponse {
-}
+record SampleResponse(Long id, String name, String description) {}

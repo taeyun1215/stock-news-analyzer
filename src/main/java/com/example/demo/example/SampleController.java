@@ -1,10 +1,15 @@
 package com.example.demo.example;
 
+import com.example.demo.global.util.ApiResponse;
+import com.example.demo.global.util.ErrorApiResponse;
+import com.example.demo.global.util.SuccessApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,38 +17,28 @@ import lombok.RequiredArgsConstructor;
 class SampleController {
 	private final SampleService sampleService;
 
-	// GET all samples
 	@GetMapping
-	public List<SampleResponse> getAllSamples() {
-		return sampleService.getAllSamples();
+	public ResponseEntity<SuccessApiResponse<List<SampleResponse>>> getAllSamples() {
+		List<SampleResponse> samples = sampleService.getAllSamples();
+		return ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), "Samples retrieved successfully", samples));
 	}
 
-	// GET sample by ID
 	@GetMapping("/{id}")
-	public ResponseEntity<SampleResponse> getSampleById(@PathVariable Long id) {
+	public ResponseEntity<ApiResponse> getSampleById(@PathVariable Long id) {
 		return sampleService.getSampleById(id)
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+				.map(sample -> ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), "Sample retrieved successfully", sample)))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorApiResponse.of(HttpStatus.NOT_FOUND.value(), "Sample not found")));
 	}
 
-	// GET sample by name (query parameter)
 	@GetMapping("/search")
-	public List<SampleResponse> getSamplesByName(@RequestParam String name) {
-		return sampleService.getSamplesByName(name);
+	public ResponseEntity<SuccessApiResponse<List<SampleResponse>>> getSamplesByName(@RequestParam String name) {
+		List<SampleResponse> samples = sampleService.getSamplesByName(name);
+		return ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), "Samples retrieved successfully", samples));
 	}
 
-	// POST create a new sample with request body
 	@PostMapping
-	public ResponseEntity<SampleResponse> createSample(@RequestBody SampleRequest sampleRequest) {
-		return new ResponseEntity<>(sampleService.createSample(sampleRequest), HttpStatus.CREATED);
-	}
-
-	// POST update an existing sample with request parameter
-	@PostMapping("/update")
-	public ResponseEntity<SampleResponse> updateSampleWithParam(@RequestParam Long id, @RequestParam String name, @RequestParam String description) {
-		SampleRequest sampleRequest = new SampleRequest(name, description);
-		return sampleService.updateSample(id, sampleRequest)
-				.map(updatedSample -> new ResponseEntity<>(updatedSample, HttpStatus.OK))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+	public ResponseEntity<ApiResponse> createSample(@RequestBody SampleRequest sampleRequest) {
+		sampleService.createSample(sampleRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(SuccessApiResponse.of(HttpStatus.CREATED.value(), "Sample created successfully"));
 	}
 }
