@@ -19,21 +19,27 @@ class SampleController {
 
 	@GetMapping
 	public ResponseEntity<SuccessApiResponse<List<SampleResponse>>> getAllSamples() {
-		List<SampleResponse> samples = sampleService.getAllSamples();
-		return ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), "Samples retrieved successfully", samples));
+		List<Sample> samples = sampleService.getAllSamples();
+		List<SampleResponse> sampleResponses = samples.stream()
+				.map(sample -> new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()))
+				.toList();
+		return ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponses));
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse> getSampleById(@PathVariable Long id) {
 		return sampleService.getSampleById(id)
-				.map(sample -> ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), "Sample retrieved successfully", sample)))
+				.map(sample -> ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()))))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorApiResponse.of(HttpStatus.NOT_FOUND.value(), "Sample not found")));
 	}
 
 	@GetMapping("/search")
 	public ResponseEntity<SuccessApiResponse<List<SampleResponse>>> getSamplesByName(@RequestParam String name) {
-		List<SampleResponse> samples = sampleService.getSamplesByName(name);
-		return ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), "Samples retrieved successfully", samples));
+		List<Sample> samples = sampleService.getSamplesByName(name);
+		List<SampleResponse> sampleResponses = samples.stream()
+				.map(sample -> new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()))
+				.toList();
+		return ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponses));
 	}
 
 	@PostMapping
