@@ -1,7 +1,10 @@
-package com.example.demo.example;
+package com.example.demo.example.controller;
 
+import com.example.demo.example.SampleRequest;
+import com.example.demo.example.SampleResponse;
+import com.example.demo.example.entity.Sample;
+import com.example.demo.example.service.SampleService;
 import com.example.demo.global.util.ApiResponse;
-import com.example.demo.global.util.ErrorApiResponse;
 import com.example.demo.global.util.SuccessApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

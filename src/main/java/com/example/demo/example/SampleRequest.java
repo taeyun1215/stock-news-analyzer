@@ -1,3 +1,3 @@
 package com.example.demo.example;
 
-record SampleRequest(String name, String description) {}
+public record SampleRequest(String name, String description) {}

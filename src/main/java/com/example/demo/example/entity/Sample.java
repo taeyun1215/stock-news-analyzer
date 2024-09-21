@@ -1,4 +1,4 @@
-package com.example.demo.example;
+package com.example.demo.example.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-class Sample {
+public class Sample {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
