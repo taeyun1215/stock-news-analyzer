@@ -1,6 +1,6 @@
 package com.example.demo.example.service;
 
-import com.example.demo.example.SampleRequest;
+import com.example.demo.example.controller.request.SampleRequest;
 import com.example.demo.example.entity.Sample;
 import com.example.demo.example.repository.SampleRepository;
 import lombok.RequiredArgsConstructor;

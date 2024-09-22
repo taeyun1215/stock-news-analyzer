@@ -1,7 +1,7 @@
 package com.example.demo.example.controller;
 
-import com.example.demo.example.SampleRequest;
-import com.example.demo.example.SampleResponse;
+import com.example.demo.example.controller.request.SampleRequest;
+import com.example.demo.example.controller.response.SampleResponse;
 import com.example.demo.example.entity.Sample;
 import com.example.demo.example.service.SampleService;
 import com.example.demo.global.util.ApiResponse;
@@ -31,7 +31,8 @@ class SampleController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse> getSampleById(@PathVariable Long id) {
-		return sampleService.getSampleById(id)
+		Sample sample = sampleService.getSampleById(id);
+		return
 				.map(sample -> ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()));
 	}
 
