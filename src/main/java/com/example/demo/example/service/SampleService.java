@@ -2,6 +2,7 @@ package com.example.demo.example.service;
 
 import com.example.demo.example.controller.request.SampleRequest;
 import com.example.demo.example.entity.Sample;
+import com.example.demo.example.exception.ExampleException;
 import com.example.demo.example.repository.SampleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,11 @@ public class SampleService {
         return sampleRepository.findAll();
     }
 
-    public Optional<Sample> getSampleById(Long id) {
-        return sampleRepository.findById(id);
-    }
 
+    public Sample getSampleById(Long id) {
+        return sampleRepository.findById(id)
+                .orElseThrow(() -> new ExampleException("Sample not found with id: " + id));
+    }
     public List<Sample> getSamplesByName(String name) {
         return sampleRepository.findByNameContaining(name);
     }

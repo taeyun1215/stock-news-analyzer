@@ -32,8 +32,8 @@ class SampleController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse> getSampleById(@PathVariable Long id) {
 		Sample sample = sampleService.getSampleById(id);
-		return
-				.map(sample -> ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()));
+		SampleResponse sampleResponse = new SampleResponse(sample.getId(), sample.getName(), sample.getDescription());
+		return ResponseEntity.ok(SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponse));
 	}
 
 	@GetMapping("/search")

@@ -1,5 +1,6 @@
 package com.example.demo.example.controller;
 
+import com.example.demo.example.exception.ExampleException;
 import com.example.demo.global.util.ErrorApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
