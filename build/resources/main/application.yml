@@ -1,2 +1,14 @@
-slack:
-  webhook: https://hooks.slack.com/services/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
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/spring-starter-kit
+    username: root
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
