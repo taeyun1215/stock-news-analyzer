@@ -52,4 +52,14 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
 }
