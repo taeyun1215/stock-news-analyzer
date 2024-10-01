@@ -18,6 +18,10 @@ repositories {
     maven { url 'https://repo.spring.io/snapshot' }
 }
 
+configurations {
+    asciidoctorExt
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -46,20 +50,36 @@ dependencies {
 
     // Rest Docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+}
 
+ext {
+    snippetsDir = file('build/generated-snippets') // 생성된 snippets를 저장할
 }
 
 tasks.named('test') {
     useJUnitPlatform()
-    outputs.dir snippetsDir
+    outputs.dir snippetsDir // snippets 저장을 수행하는 test task 설정
 }
 
 asciidoctor {
     inputs.dir snippetsDir
-    dependsOn test
+    dependsOn test // test 이후 실행되도록 설정
+
+    doFirst {
+        delete file('src/main/resources/static/docs') // 기존에 있던 문서 삭제
+    }
 }
 
-ext {
-    snippetsDir = file('build/generated-snippets')
+bootJar { // jar의 static/docs에 문서 복사
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}/html5") {
+        into 'BOOT-INF/classes/static/docs'
+    }
+}
+
+task copyDocument(type: Copy) { // build/docs 문서를 resources에 복사
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
 }
