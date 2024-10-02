@@ -103,7 +103,7 @@ public class SampleControllerRestDocsTest {
                         ),
                         responseFields(
                                 fieldWithPath("success").description("성공 여부"),
-                                fieldWithPath("data").description("생성된 샘플 ID")
+                                fieldWithPath("db").description("생성된 샘플 ID")
                         )));
     }
 }

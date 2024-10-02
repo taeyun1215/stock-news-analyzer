@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mariadb://localhost:3306/spring-starter-kit
+    username: root
+    password: password
+    initialization-mode: always # 데이터베이스 초기화 모드 설정 (항상 초기화)
