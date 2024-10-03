@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -17,6 +18,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,7 +36,7 @@ public class SampleControllerRestDocsTest {
     @BeforeEach
     public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration())
+                .apply(documentationConfiguration((RestDocumentationContextProvider) this.context))
                 .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
                 .build();
     }
@@ -45,7 +47,13 @@ public class SampleControllerRestDocsTest {
         this.mockMvc.perform(get("/api/v1/samples")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("get-all-samples"));
+                .andDo(document("get-all-samples",
+                        responseFields(
+                                fieldWithPath("success").description("성공 여부"),
+                                fieldWithPath("data[].id").description("샘플 ID"),
+                                fieldWithPath("data[].name").description("샘플 이름"),
+                                fieldWithPath("data[].description").description("샘플 설명")
+                        )));
     }
 
     @Test
@@ -54,7 +62,13 @@ public class SampleControllerRestDocsTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/samples/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("get-sample-by-id"));
+                .andDo(document("get-sample-by-id",
+                        responseFields(
+                                fieldWithPath("success").description("성공 여부"),
+                                fieldWithPath("data.id").description("샘플 ID"),
+                                fieldWithPath("data.name").description("샘플 이름"),
+                                fieldWithPath("data.description").description("샘플 설명")
+                        )));
     }
 
     @Test
@@ -64,7 +78,13 @@ public class SampleControllerRestDocsTest {
                         .param("name", "example")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("get-samples-by-name"));
+                .andDo(document("get-samples-by-name",
+                        responseFields(
+                                fieldWithPath("success").description("성공 여부"),
+                                fieldWithPath("data[].id").description("샘플 ID"),
+                                fieldWithPath("data[].name").description("샘플 이름"),
+                                fieldWithPath("data[].description").description("샘플 설명")
+                        )));
     }
 
     @Test
@@ -76,6 +96,14 @@ public class SampleControllerRestDocsTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(sampleRequestJson))
                 .andExpect(status().isCreated())
-                .andDo(document("create-sample"));
+                .andDo(document("create-sample",
+                        requestFields(
+                                fieldWithPath("name").description("샘플 이름"),
+                                fieldWithPath("description").description("샘플 설명")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").description("성공 여부"),
+                                fieldWithPath("data").description("생성된 샘플 ID")
+                        )));
     }
 }
