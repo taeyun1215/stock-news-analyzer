@@ -2,3 +2,11 @@ spring:
   config:
     activate:
       on-profile: prod
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    initialization-mode: never
+  jpa:
+    hibernate:
+      ddl-auto: none
