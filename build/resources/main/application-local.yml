@@ -13,5 +13,5 @@ spring:
     password: password
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none # 초기에 많이 변경되는 경우엔 update도 많이 사용함.
     defer-datasource-initialization: true
