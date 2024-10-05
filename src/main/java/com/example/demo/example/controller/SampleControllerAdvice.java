@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class SampleControllerAdvice {
+
     @ExceptionHandler(ExampleException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorApiResponse handleExampleException(ExampleException ex) {

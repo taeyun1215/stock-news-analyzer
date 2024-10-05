@@ -14,6 +14,7 @@ public class SampleRepositoryCustomImpl implements SampleRepositoryCustom {
     @Override
     public List<Sample> findByNameContainingQueryDsl(String name) {
         QSample qSample = QSample.sample;
+
         return queryFactory
                 .selectFrom(qSample)
                 .where(qSample.name.containsIgnoreCase(name))

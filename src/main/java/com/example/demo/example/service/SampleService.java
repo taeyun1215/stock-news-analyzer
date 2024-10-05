@@ -22,9 +22,9 @@ public class SampleService {
 
     public Sample getSampleById(Long id) {
         return sampleRepository.findById(id)
-
                 .orElseThrow(() -> new ExampleException("Sample not found with id: " + id));
     }
+
     public List<Sample> getSamplesByName(String name) {
         return sampleRepository.findByNameContainingQueryDsl(name);
     }
@@ -34,6 +34,7 @@ public class SampleService {
                 .name(sampleRequest.name())
                 .description(sampleRequest.description())
                 .build();
+
         sampleRepository.save(sample);
     }
 }
