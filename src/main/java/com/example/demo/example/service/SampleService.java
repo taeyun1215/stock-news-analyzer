@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,11 @@ public class SampleService {
                 .orElseThrow(() -> new ExampleException("Sample not found with id: " + id));
     }
 
-    public List<Sample> getSamplesByName(String name) {
+    public List<Sample> getSamplesByDescriptionNative(String description) {
+        return sampleRepository.findByDescriptionContainingNative(description);
+    }
+
+    public List<Sample> getSamplesByNameQueryDsl(String name) {
         return sampleRepository.findByNameContainingQueryDsl(name);
     }
 

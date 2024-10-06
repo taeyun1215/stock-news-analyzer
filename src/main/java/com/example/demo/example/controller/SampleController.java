@@ -35,9 +35,20 @@ class SampleController {
 		return SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponse);
 	}
 
-	@GetMapping("/search")
+	// Native Query
+	@GetMapping("/searchByDescription")
+	public SuccessApiResponse<List<SampleResponse>> getSamplesByDescription(@RequestParam String description) {
+		List<Sample> samples = sampleService.getSamplesByDescriptionNative(description);
+		List<SampleResponse> sampleResponses = samples.stream()
+				.map(sample -> new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()))
+				.toList();
+		return SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponses);
+	}
+
+	// QueryDSL
+	@GetMapping("/searchByName")
 	public SuccessApiResponse<List<SampleResponse>> getSamplesByName(@RequestParam String name) {
-		List<Sample> samples = sampleService.getSamplesByName(name);
+		List<Sample> samples = sampleService.getSamplesByNameQueryDsl(name);
 		List<SampleResponse> sampleResponses = samples.stream()
 				.map(sample -> new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()))
 				.toList();

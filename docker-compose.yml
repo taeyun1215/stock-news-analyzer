@@ -8,6 +8,10 @@ services:
     container_name: spring-starter-kit
     ports:
       - "8080:8080"
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
 
   prometheus:
     image: prom/prometheus:latest
