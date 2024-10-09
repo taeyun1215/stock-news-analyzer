@@ -21,9 +21,9 @@ public class QSample extends EntityPathBase<Sample> {
 
     public final StringPath description = createString("description");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
-
     public final StringPath name = createString("name");
+
+    public final NumberPath<Long> sampleId = createNumber("sampleId", Long.class);
 
     public QSample(String variable) {
         super(Sample.class, forVariable(variable));

@@ -22,7 +22,7 @@ class SampleController {
 	public SuccessApiResponse<List<SampleResponse>> getAllSamples() {
 		List<Sample> samples = sampleService.getAllSamples();
 		List<SampleResponse> sampleResponses = samples.stream()
-				.map(sample -> new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()))
+				.map(sample -> new SampleResponse(sample.getSampleId(), sample.getName(), sample.getDescription()))
 				.toList();
 
 		return SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponses);
@@ -31,7 +31,7 @@ class SampleController {
 	@GetMapping("/{id}")
 	public SuccessApiResponse<SampleResponse> getSampleById(@PathVariable Long id) {
 		Sample sample = sampleService.getSampleById(id);
-		SampleResponse sampleResponse = new SampleResponse(sample.getId(), sample.getName(), sample.getDescription());
+		SampleResponse sampleResponse = new SampleResponse(sample.getSampleId(), sample.getName(), sample.getDescription());
 		return SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponse);
 	}
 
@@ -40,7 +40,7 @@ class SampleController {
 	public SuccessApiResponse<List<SampleResponse>> getSamplesByDescription(@RequestParam String description) {
 		List<Sample> samples = sampleService.getSamplesByDescriptionNative(description);
 		List<SampleResponse> sampleResponses = samples.stream()
-				.map(sample -> new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()))
+				.map(sample -> new SampleResponse(sample.getSampleId(), sample.getName(), sample.getDescription()))
 				.toList();
 		return SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponses);
 	}
@@ -50,7 +50,7 @@ class SampleController {
 	public SuccessApiResponse<List<SampleResponse>> getSamplesByName(@RequestParam String name) {
 		List<Sample> samples = sampleService.getSamplesByNameQueryDsl(name);
 		List<SampleResponse> sampleResponses = samples.stream()
-				.map(sample -> new SampleResponse(sample.getId(), sample.getName(), sample.getDescription()))
+				.map(sample -> new SampleResponse(sample.getSampleId(), sample.getName(), sample.getDescription()))
 				.toList();
 		return SuccessApiResponse.of(HttpStatus.OK.value(), sampleResponses);
 	}
