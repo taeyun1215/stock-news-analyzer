@@ -14,26 +14,24 @@ import java.util.List;
 public class nhtsadpCrawl {
 
     public static void main(String[] args) {
-        // Set up the ChromeDriver
         System.setProperty("webdriver.chrome.driver", "/Users/taeyun/Downloads/chromedriver-mac-arm64/chromedriver");
         WebDriver driver = new ChromeDriver();
 
         try {
-            // Navigate to the target URL
+            // 대상 URL로 이동
             driver.get("https://www.nhtsa.gov/search-safety-issues");
 
-            // Wait until the elements with data-toggle="collapse" are present
+            // data-toggle="collapse" 속성을 가진 요소들이 나타날 때까지 대기
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             List<WebElement> accordionTriggers = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("[data-toggle='collapse']")));
-            System.out.println(accordionTriggers);
 
-            // Click each accordion trigger to expand
+            // 각 아코디언 트리거를 클릭해서 확장
             for (WebElement trigger : accordionTriggers) {
                 ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", trigger);
             }
 
             // 주어진 XPath로 부모 요소를 찾음
-            String parentXPath = "/html/body/div[1]/div[1]/main/article/div/article/div[2]/div[4]/div/div/div[3]/div[4]/div/div[2]/div[2]/div/div[4]/div[2]";
+            String parentXPath = "/html/body/div[1]/div[1]/main/article/div/article/div[2]/div[4]/div/div/div[3]/div[4]/div/div[1]/div[2]/div/div[4]/div[2]";
             WebElement parentElement = driver.findElement(By.xpath(parentXPath));
 
             // 부모 요소 아래에서 태그에 상관없이 텍스트가 정확히 'Recall 573 Report'인 요소의 a 태그를 찾음
@@ -48,9 +46,6 @@ public class nhtsadpCrawl {
                 System.out.println("링크 텍스트: " + aTag.getText());
                 System.out.println("링크 URL: " + aTag.getAttribute("href"));
             }
-
-            // 충분한 시간 대기 (예: 10초)
-            Thread.sleep(10000);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

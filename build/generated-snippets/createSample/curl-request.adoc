@@ -1,0 +1,6 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/api/v1/samples' -i -X POST \
+    -H 'Content-Type: application/json' \
+    -d '{"name": "Sample Name", "description": "Sample Description"}'
+----

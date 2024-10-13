@@ -1,0 +1,24 @@
+|===
+|Path|Type|Description
+
+|`+status+`
+|`+Number+`
+|Status code of the response
+
+|`+message+`
+|`+String+`
+|Optional message
+
+|`+data[].id+`
+|`+Number+`
+|ID of the Sample
+
+|`+data[].name+`
+|`+String+`
+|Name of the Sample
+
+|`+data[].description+`
+|`+String+`
+|Description of the Sample
+
+|===

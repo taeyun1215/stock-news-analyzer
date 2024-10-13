@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/samples")
-class SampleController {
+public class SampleController {
 	private final SampleService sampleService;
 
 	@GetMapping

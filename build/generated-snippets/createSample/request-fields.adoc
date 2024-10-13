@@ -1,0 +1,12 @@
+|===
+|Path|Type|Description
+
+|`+name+`
+|`+String+`
+|Name of the Sample
+
+|`+description+`
+|`+String+`
+|Description of the Sample
+
+|===

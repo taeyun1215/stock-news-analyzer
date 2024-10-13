@@ -1,0 +1,5 @@
+[source,bash]
+----
+$ echo '{"name": "Sample Name", "description": "Sample Description"}' | http POST 'http://localhost:8080/api/v1/samples' \
+    'Content-Type:application/json'
+----

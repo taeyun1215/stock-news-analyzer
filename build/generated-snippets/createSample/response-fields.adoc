@@ -1,0 +1,16 @@
+|===
+|Path|Type|Description
+
+|`+status+`
+|`+Number+`
+|Status code of the response
+
+|`+message+`
+|`+String+`
+|Optional message
+
+|`+data+`
+|`+Null+`
+|Sample creation result message, can be null
+
+|===

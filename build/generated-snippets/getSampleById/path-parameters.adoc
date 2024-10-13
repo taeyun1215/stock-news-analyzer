@@ -1,0 +1,8 @@
+.+/api/v1/samples/{id}+
+|===
+|Parameter|Description
+
+|`+id+`
+|The ID of the Sample to retrieve
+
+|===

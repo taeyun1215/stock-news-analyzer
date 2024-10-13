@@ -1,109 +1,157 @@
 package com.example.demo;
 
+import com.example.demo.example.controller.SampleController;
+import com.example.demo.example.entity.Sample;
+import com.example.demo.example.service.SampleService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(RestDocumentationExtension.class)
 public class SampleControllerRestDocsTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private WebApplicationContext context;
+    @Mock
+    private SampleService sampleService;
+
+    @InjectMocks
+    private SampleController sampleController;
 
     @BeforeEach
-    public void setUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration((RestDocumentationContextProvider) this.context))
-                .alwaysDo(document("{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint())))
+    public void setUp(RestDocumentationContextProvider restDocumentation) {
+        MockitoAnnotations.openMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(sampleController)
+                .apply(documentationConfiguration(restDocumentation))
                 .build();
     }
 
     @Test
-    @DisplayName("모든 샘플 가져오기 테스트")
-    void getAllSamples() throws Exception {
-        this.mockMvc.perform(get("/api/v1/samples")
-                        .accept(MediaType.APPLICATION_JSON))
+    public void getAllSamples() throws Exception {
+        // Setup mock response
+        when(sampleService.getAllSamples()).thenReturn(List.of(Sample.builder().sampleId(1L).name("Sample Name").description("Sample Description").build()));
+
+        // Perform the request and document it
+        mockMvc.perform(get("/api/v1/samples"))
                 .andExpect(status().isOk())
-                .andDo(document("get-all-samples",
-                        responseFields(
-                                fieldWithPath("success").description("성공 여부"),
-                                fieldWithPath("data[].id").description("샘플 ID"),
-                                fieldWithPath("data[].name").description("샘플 이름"),
-                                fieldWithPath("data[].description").description("샘플 설명")
+                .andDo(print())
+                .andDo(document("getAllSamples",
+                        PayloadDocumentation.responseFields(
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("Status code of the response"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).optional().description("Optional message"),
+                                fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("ID of the Sample"),
+                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("Name of the Sample"),
+                                fieldWithPath("data[].description").type(JsonFieldType.STRING).description("Description of the Sample")
                         )));
     }
 
     @Test
-    @DisplayName("ID로 샘플 가져오기 테스트")
-    void getSampleById() throws Exception {
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get("/api/v1/samples/{id}", 1)
-                        .accept(MediaType.APPLICATION_JSON))
+    public void getSampleById() throws Exception {
+        // Setup mock response
+        Long sampleId = 1L;
+        when(sampleService.getSampleById(sampleId)).thenReturn(Sample.builder().sampleId(sampleId).name("Sample Name").description("Sample Description").build());
+
+        // Perform the request and document it
+        mockMvc.perform(get("/api/v1/samples/{id}", sampleId))
                 .andExpect(status().isOk())
-                .andDo(document("get-sample-by-id",
-                        responseFields(
-                                fieldWithPath("success").description("성공 여부"),
-                                fieldWithPath("data.id").description("샘플 ID"),
-                                fieldWithPath("data.name").description("샘플 이름"),
-                                fieldWithPath("data.description").description("샘플 설명")
-                        )));
-    }
-
-    @Test
-    @DisplayName("이름으로 샘플 검색 테스트")
-    void getSamplesByName() throws Exception {
-        this.mockMvc.perform(get("/api/v1/samples/search")
-                        .param("name", "example")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(document("get-samples-by-name",
-                        responseFields(
-                                fieldWithPath("success").description("성공 여부"),
-                                fieldWithPath("data[].id").description("샘플 ID"),
-                                fieldWithPath("data[].name").description("샘플 이름"),
-                                fieldWithPath("data[].description").description("샘플 설명")
-                        )));
-    }
-
-    @Test
-    @DisplayName("샘플 생성 테스트")
-    void createSample() throws Exception {
-        String sampleRequestJson = "{\"name\": \"Sample Name\", \"description\": \"Sample Description\"}";
-
-        this.mockMvc.perform(post("/api/v1/samples")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(sampleRequestJson))
-                .andExpect(status().isCreated())
-                .andDo(document("create-sample",
-                        requestFields(
-                                fieldWithPath("name").description("샘플 이름"),
-                                fieldWithPath("description").description("샘플 설명")
+                .andDo(print())
+                .andDo(document("getSampleById",
+                        pathParameters(
+                                parameterWithName("id").description("The ID of the Sample to retrieve")
                         ),
-                        responseFields(
-                                fieldWithPath("success").description("성공 여부"),
-                                fieldWithPath("db").description("생성된 샘플 ID")
+                        PayloadDocumentation.responseFields(
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("Status code of the response"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).optional().description("Optional message"),
+                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("ID of the Sample"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("Name of the Sample"),
+                                fieldWithPath("data.description").type(JsonFieldType.STRING).description("Description of the Sample")
+                        )));
+    }
+
+    @Test
+    public void getSamplesByDescription() throws Exception {
+        // Setup mock response
+        when(sampleService.getSamplesByDescriptionNative(any())).thenReturn(List.of(Sample.builder().sampleId(1L).name("Sample Name").description("Sample Description").build()));
+
+        // Perform the request and document it
+        mockMvc.perform(get("/api/v1/samples/searchByDescription").param("description", "Sample Description"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("getSamplesByDescription",
+                        queryParameters(
+                                parameterWithName("description").description("Description to search for")
+                        ),
+                        PayloadDocumentation.responseFields(
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("Status code of the response"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).optional().description("Optional message"),
+                                fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("ID of the Sample"),
+                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("Name of the Sample"),
+                                fieldWithPath("data[].description").type(JsonFieldType.STRING).description("Description of the Sample")
+                        )));
+    }
+
+    @Test
+    public void getSamplesByName() throws Exception {
+        // Setup mock response
+        when(sampleService.getSamplesByNameQueryDsl(any())).thenReturn(List.of(Sample.builder().sampleId(1L).name("Sample Name").description("Sample Description").build()));
+
+        // Perform the request and document it
+        mockMvc.perform(get("/api/v1/samples/searchByName").param("name", "Sample Name"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("getSamplesByName",
+                        queryParameters(
+                                parameterWithName("name").description("Name to search for")
+                        ),
+                        PayloadDocumentation.responseFields(
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("Status code of the response"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).optional().description("Optional message"),
+                                fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("ID of the Sample"),
+                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("Name of the Sample"),
+                                fieldWithPath("data[].description").type(JsonFieldType.STRING).description("Description of the Sample")
+                        )));
+    }
+
+    @Test
+    public void createSample() throws Exception {
+        // Perform the request and document it
+        mockMvc.perform(post("/api/v1/samples")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\": \"Sample Name\", \"description\": \"Sample Description\"}"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("createSample",
+                        PayloadDocumentation.requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("Name of the Sample"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("Description of the Sample")
+                        ),
+                        PayloadDocumentation.responseFields(
+                                fieldWithPath("status").type(JsonFieldType.NUMBER).description("Status code of the response"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).optional().description("Optional message"),
+                                fieldWithPath("data").type(JsonFieldType.NULL).description("Sample creation result message, can be null")
                         )));
     }
 }
