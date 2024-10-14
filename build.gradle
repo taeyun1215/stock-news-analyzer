@@ -54,13 +54,6 @@ dependencies {
     // Rest Docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-
-    // Selenium
-    implementation 'org.seleniumhq.selenium:selenium-java:4.5.0'
-
-    // If needed, you can add web driver binaries manager to simplify the setup
-    implementation 'io.github.bonigarcia:webdrivermanager:5.2.1'
-
 }
 
 ext {
