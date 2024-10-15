@@ -33,8 +33,11 @@ configurations {
 
 ext {
     snippetsDir = file('build/generated-snippets') // 스니펫 디렉토리 설정
-    apiDocsDir = file('build/api-spec') // OpenAPI 스펙 파일 저장 경로
 }
+
+// 환경 변수 설정: 'dev', 'local', 'prod'
+def env = project.findProperty('env')
+def isLocalOrDev = env == 'local' || env == 'dev'
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -82,61 +85,65 @@ tasks.named('test') {
 tasks.register('restDocsTest', Test) {
     outputs.dir snippetsDir
     useJUnitPlatform {
-        includeTags 'restDocsTest'
+        includeTags 'restDocs'
     }
 }
 
-asciidoctor {
-    dependsOn test // test 이후 asciidoctor 실행
+if (isLocalOrDev) {
+    asciidoctor {
+        dependsOn 'test', 'restDocsTest'
+        inputs.dir snippetsDir
+        configurations 'asciidoctorExt'
+        baseDirFollowsSourceDir()
+    }
 
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
-    baseDirFollowsSourceDir() // 원본 파일 기준으로 작업
-}
+    openapi3 {
+        servers = [
+                { url = 'http://localhost:8080' },
+        ]
+        title = 'spring-starter-kit'
+        description = 'spring-starter-kit document swagger ui'
+        version = "${project.version}"
+        format = 'json'
+        outputFileNamePrefix = 'openapi3' // 생성될 스펙 파일의 이름 설정
+    }
 
-openapi3 {
-    servers = [
-            { url = 'http://localhost:8080' },
-    ]
-    title = 'spring-starter-kit'
-    description = 'spring-starter-kit document swagger ui.'
-    version = "${project.version}"
-    format = 'json'
-    outputFileNamePrefix = 'openapi3' // 생성될 스펙 파일의 이름 설정
-}
+    swaggerSources {
+        sample {
+            inputFile = file("${buildDir}/api-spec/openapi3.json") // OpenAPI 스펙 파일 경로
 
-swaggerSources {
-    sample {
-        inputFile = file("${buildDir}/api-spec/openapi3.json") // OpenAPI 스펙 파일 경로
-
-        ui {
-            // Swagger UI 파일들이 생성될 위치를 지정합니다.
-            outputDir = file("${buildDir}/swagger-ui")
+            ui {
+                outputDir = file("${buildDir}/swagger-ui") // Swagger UI 파일들이 생성될 위치를 지정합니다.
+            }
         }
     }
-}
 
-// GenerateSwaggerUI 태스크가 openapi3 태스크에 의존하도록 설정
-tasks.named('generateSwaggerUISample', GenerateSwaggerUI) {
-    dependsOn 'openapi3'
+    // GenerateSwaggerUI 태스크가 openapi3 태스크에 의존하도록 설정
+    tasks.named('generateSwaggerUISample', GenerateSwaggerUI) {
+        dependsOn 'openapi3'
+    }
 }
 
 bootJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE // 중복 파일 처리 전략 설정
-    dependsOn 'asciidoctor', 'generateSwaggerUISample' // asciidoctor와 Swagger UI 생성 후 실행
 
-    // Swagger UI 파일들을 포함
-    from("${buildDir}/swagger-ui") {
-        into 'BOOT-INF/classes/static/swagger-ui' // 애플리케이션 내에서 /swagger-ui 경로로 접근 가능
-    }
+    if (isLocalOrDev) {
+        dependsOn 'asciidoctor' // asciidoctor후 실행
+        dependsOn 'generateSwaggerUISample' //Swagger UI 생성 후 실행
 
-    // OpenAPI 스펙 파일 포함
-    from("${buildDir}/api-spec") {
-        into 'BOOT-INF/classes/static/swagger-ui' // 스펙 파일을 Swagger UI 디렉토리에 포함
-    }
+        // Swagger UI 파일들을 포함
+        from("${buildDir}/swagger-ui") {
+            into 'BOOT-INF/classes/static/swagger-ui'
+        }
 
-    // Asciidoctor로 생성된 문서 포함
-    from("${asciidoctor.outputDir}") {
-        into 'BOOT-INF/classes/static/docs' // 애플리케이션 내에서 /docs 경로로 접근 가능
+        // OpenAPI 스펙 파일 포함
+        from("${buildDir}/api-spec") {
+            into 'BOOT-INF/classes/static/swagger-ui'
+        }
+
+        // Asciidoctor로 생성된 문서 포함
+        from("${asciidoctor.outputDir}") {
+            into 'BOOT-INF/classes/static/docs'
+        }
     }
 }

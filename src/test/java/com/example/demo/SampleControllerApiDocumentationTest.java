@@ -6,6 +6,7 @@ import com.example.demo.example.controller.SampleController;
 import com.example.demo.example.entity.Sample;
 import com.example.demo.example.service.SampleService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * REST Docs와 OpenAPI 문서화를 함께 수행합니다.
  */
 @ExtendWith(RestDocumentationExtension.class)
+@Tag("restDocs")
 public class SampleControllerApiDocumentationTest {
 
     private MockMvc mockMvc;

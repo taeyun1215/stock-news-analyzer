@@ -2,7 +2,7 @@ window.swaggerSpec={
   "openapi" : "3.0.1",
   "info" : {
     "title" : "spring-starter-kit",
-    "description" : "spring-starter-kit document swagger ui.",
+    "description" : "spring-starter-kit document swagger ui",
     "version" : "0.0.1-SNAPSHOT"
   },
   "servers" : [ {

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.example.demo.SampleControllerApiDocumentationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-11-05T01:43:35" hostname="itaeyun-ui-MacBookAir.local" time="4.52">
+<testsuite name="com.example.demo.SampleControllerApiDocumentationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-11-12T08:26:30" hostname="itaeyun-ui-MacBookAir.local" time="1.351">
   <properties/>
-  <testcase name="getAllSamples()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="3.959"/>
-  <testcase name="getSamplesByName()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="0.201"/>
-  <testcase name="getSamplesByDescription()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="0.096"/>
-  <testcase name="getSampleById()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="0.079"/>
-  <testcase name="createSample()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="0.172"/>
-  <system-out><![CDATA[10:43:36.920 [Test worker] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 8.0.1.Final
-10:43:38.134 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
-10:43:38.136 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
-10:43:38.141 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 4 ms
+  <testcase name="getAllSamples()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="1.24"/>
+  <testcase name="getSamplesByName()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="0.031"/>
+  <testcase name="getSamplesByDescription()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="0.022"/>
+  <testcase name="getSampleById()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="0.022"/>
+  <testcase name="createSample()" classname="com.example.demo.SampleControllerApiDocumentationTest" time="0.033"/>
+  <system-out><![CDATA[17:26:31.398 [Test worker] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 8.0.1.Final
+17:26:31.761 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+17:26:31.761 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+17:26:31.762 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
 
 MockHttpServletRequest:
       HTTP Method = GET
@@ -47,9 +47,9 @@ MockHttpServletResponse:
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-10:43:39.367 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
-10:43:39.367 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
-10:43:39.368 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+17:26:32.082 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+17:26:32.082 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+17:26:32.083 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
 
 MockHttpServletRequest:
       HTTP Method = GET
@@ -87,9 +87,9 @@ MockHttpServletResponse:
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-10:43:39.560 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
-10:43:39.560 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
-10:43:39.560 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+17:26:32.113 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+17:26:32.113 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+17:26:32.113 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
 
 MockHttpServletRequest:
       HTTP Method = GET
@@ -127,9 +127,9 @@ MockHttpServletResponse:
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-10:43:39.654 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
-10:43:39.655 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
-10:43:39.655 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+17:26:32.135 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+17:26:32.135 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+17:26:32.135 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
 
 MockHttpServletRequest:
       HTTP Method = GET
@@ -167,9 +167,9 @@ MockHttpServletResponse:
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
-10:43:39.736 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
-10:43:39.738 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
-10:43:39.738 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+17:26:32.158 [Test worker] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+17:26:32.158 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+17:26:32.158 [Test worker] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
 
 MockHttpServletRequest:
       HTTP Method = POST
