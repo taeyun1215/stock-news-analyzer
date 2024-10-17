@@ -1,0 +1,64 @@
+= API Docs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:snippets: build/generated-snippets
+
+== Introduce
+
+This is the Core API documentation.
+
+== Sample API
+
+=== Create Sample
+==== Curl Request
+include::{snippets}/createSample/curl-request.adoc[]
+==== Request Fields
+include::{snippets}/createSample/request-fields.adoc[]
+==== Http Response
+include::{snippets}/createSample/http-response.adoc[]
+==== Response Fields
+include::{snippets}/createSample/response-fields.adoc[]
+
+=== Get All Samples
+==== Curl Request
+include::{snippets}/getAllSamples/curl-request.adoc[]
+==== Request Body
+include::{snippets}/getAllSamples/request-body.adoc[]
+==== Http Response
+include::{snippets}/getAllSamples/http-response.adoc[]
+==== Response Fields
+include::{snippets}/getAllSamples/response-fields.adoc[]
+
+=== Get Sample By ID
+==== Curl Request
+include::{snippets}/getSampleById/curl-request.adoc[]
+==== Path Parameters
+include::{snippets}/getSampleById/path-parameters.adoc[]
+==== Http Response
+include::{snippets}/getSampleById/http-response.adoc[]
+==== Response Fields
+include::{snippets}/getSampleById/response-fields.adoc[]
+
+=== Get Samples By Description
+==== Curl Request
+include::{snippets}/getSamplesByDescription/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/getSamplesByDescription/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/getSamplesByDescription/http-response.adoc[]
+==== Response Fields
+include::{snippets}/getSamplesByDescription/response-fields.adoc[]
+
+=== Get Samples By Name
+==== Curl Request
+include::{snippets}/getSamplesByName/curl-request.adoc[]
+==== Query Parameters
+include::{snippets}/getSamplesByName/query-parameters.adoc[]
+==== Http Response
+include::{snippets}/getSamplesByName/http-response.adoc[]
+==== Response Fields
+include::{snippets}/getSamplesByName/response-fields.adoc[]
