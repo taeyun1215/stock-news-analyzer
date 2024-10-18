@@ -3,6 +3,8 @@ plugins {
     id 'org.springframework.boot' version '3.2.4'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
+
+    id 'com.epages.restdocs-api-spec' version '0.17.1'
 }
 
 group = 'com.example'
@@ -19,7 +21,15 @@ repositories {
 }
 
 configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
     asciidoctorExt
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets') // 스니펫 디렉토리 설정
+    apiDocsDir = file('build/api-spec') // OpenAPI 스펙 파일 저장 경로
 }
 
 dependencies {
@@ -54,10 +64,14 @@ dependencies {
     // Rest Docs
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-}
 
-ext {
-    snippetsDir = file('build/generated-snippets') // 생성된 snippets을 저장할 경로
+    // SpringDoc OpenAPI (Swagger) 통합
+    implementation 'org.springdoc:springdoc-openapi-ui:2.2.0'
+    implementation 'org.springdoc:springdoc-openapi-webmvc-core:2.2.0'
+
+    // REST Docs와 OpenAPI 스펙 생성을 위한 의존성 추가
+    testImplementation 'com.epages:restdocs-api-spec:0.17.2'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.2'
 }
 
 tasks.named('test') {
@@ -65,20 +79,52 @@ tasks.named('test') {
     outputs.dir snippetsDir // 생성된 snippets을 지정된 경로 저장
 }
 
+tasks.register('restDocsTest', Test) {
+    outputs.dir snippetsDir
+    useJUnitPlatform {
+        includeTags 'restDocs' // 필요한 경우 태그 설정
+    }
+
+    finalizedBy 'asciidoctor', 'openapi3' // 테스트 후 asciidoctor와 openapi3 태스크 실행
+}
+
 asciidoctor {
-    dependsOn test // test 이후 asciidoctor가 실행되도록 설정
+    dependsOn restDocsTest // restDocsTest 이후 asciidoctor 실행
 
     inputs.dir snippetsDir
-    doFirst {
-        delete file('src/main/resources/static/docs') // 기존에 있던 문서 삭제
-    }
+    configurations 'asciidoctorExt'
+    baseDirFollowsSourceDir() // 원본 파일 기준으로 작업
+}
+
+openapi3 {
+    servers = [
+            [url: 'http://localhost:8080']
+    ]
+    title = 'spring-starter-kit'
+    description = 'spring-starter-kit document swagger ui.'
+    version = "${project.version}"
+    format = 'yaml'
+    outputDir = apiDocsDir  // 출력 디렉토리 설정
+}
+
+tasks.register('copyOpenApiSpec', Copy) {
+    dependsOn 'openapi3'
+
+    from(apiDocsDir)
+    into 'src/main/resources/static/swagger' // Swagger UI에서 참조할 수 있도록 스펙 파일 복사
 }
 
 bootJar {
-    dependsOn asciidoctor // asciidoctor 이후 bootJar가 실행되도록 설정
+    dependsOn 'asciidoctor', 'copyOpenApiSpec' // asciidoctor와 스펙 복사 이후 실행
 
-    copy {
-        from "${asciidoctor.outputDir}"
-        into "src/main/resources/static/docs"   // src/main/resources/static/docs로 복사
+    from("${asciidoctor.outputDir}") {
+        into 'BOOT-INF/classes/static/docs'
     }
+    from(apiDocsDir) {
+        into 'BOOT-INF/classes/static/swagger' // Swagger 파일 포함
+    }
+}
+
+springBoot {
+    buildInfo()
 }
