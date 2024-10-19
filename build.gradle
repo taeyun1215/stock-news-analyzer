@@ -98,7 +98,7 @@ asciidoctor {
 
 openapi3 {
     servers = [
-            [url: 'http://localhost:8080']
+            { url = 'http://localhost:8080' },
     ]
     title = 'spring-starter-kit'
     description = 'spring-starter-kit document swagger ui.'
