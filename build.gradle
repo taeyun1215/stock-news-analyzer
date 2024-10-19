@@ -2,9 +2,13 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.4'
     id 'io.spring.dependency-management' version '1.1.4'
+
+    // Rest Docs
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
 
+    // SpringDoc OpenAPI (Swagger)
     id 'com.epages.restdocs-api-spec' version '0.17.1'
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'com.example'
@@ -65,13 +69,9 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
-    // SpringDoc OpenAPI (Swagger) 통합
-    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
-    implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.7.0'
-
-    // REST Docs와 OpenAPI 스펙 생성을 위한 의존성 추가
-    testImplementation 'com.epages:restdocs-api-spec:0.17.1'
+    /// SpringDoc OpenAPI (Swagger)
     testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.1'
+    swaggerUI 'org.webjars:swagger-ui:4.11.1'
 }
 
 tasks.named('test') {
@@ -82,14 +82,12 @@ tasks.named('test') {
 tasks.register('restDocsTest', Test) {
     outputs.dir snippetsDir
     useJUnitPlatform {
-        includeTags 'restDocs' // 필요한 경우 태그 설정
+        includeTags 'restDocsTest'
     }
-
-    finalizedBy 'asciidoctor', 'openapi3' // 테스트 후 asciidoctor와 openapi3 태스크 실행
 }
 
 asciidoctor {
-    dependsOn restDocsTest // restDocsTest 이후 asciidoctor 실행
+    dependsOn test // test 이후 asciidoctor 실행
 
     inputs.dir snippetsDir
     configurations 'asciidoctorExt'
@@ -103,28 +101,42 @@ openapi3 {
     title = 'spring-starter-kit'
     description = 'spring-starter-kit document swagger ui.'
     version = "${project.version}"
-    format = 'yaml'
-    outputDirectory = apiDocsDir  // 출력 디렉토리 설정
+    format = 'json'
+    outputFileNamePrefix = 'openapi3' // 생성될 스펙 파일의 이름 설정
 }
 
-tasks.register('copyOpenApiSpec', Copy) {
-    dependsOn 'openapi3'
+swaggerSources {
+    sample {
+        inputFile = file("${buildDir}/api-spec/openapi3.json") // OpenAPI 스펙 파일 경로
 
-    from(apiDocsDir)
-    into 'src/main/resources/static/swagger' // Swagger UI에서 참조할 수 있도록 스펙 파일 복사
+        ui {
+            // Swagger UI 파일들이 생성될 위치를 지정합니다.
+            outputDir = file("${buildDir}/swagger-ui")
+        }
+    }
+}
+
+// GenerateSwaggerUI 태스크가 openapi3 태스크에 의존하도록 설정
+tasks.named('generateSwaggerUISample', GenerateSwaggerUI) {
+    dependsOn 'openapi3'
 }
 
 bootJar {
-    dependsOn 'asciidoctor', 'copyOpenApiSpec' // asciidoctor와 스펙 복사 이후 실행
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // 중복 파일 처리 전략 설정
+    dependsOn 'asciidoctor', 'generateSwaggerUISample' // asciidoctor와 Swagger UI 생성 후 실행
 
+    // Swagger UI 파일들을 포함
+    from("${buildDir}/swagger-ui") {
+        into 'BOOT-INF/classes/static/swagger-ui' // 애플리케이션 내에서 /swagger-ui 경로로 접근 가능
+    }
+
+    // OpenAPI 스펙 파일 포함
+    from("${buildDir}/api-spec") {
+        into 'BOOT-INF/classes/static/swagger-ui' // 스펙 파일을 Swagger UI 디렉토리에 포함
+    }
+
+    // Asciidoctor로 생성된 문서 포함
     from("${asciidoctor.outputDir}") {
-        into 'BOOT-INF/classes/static/docs'
+        into 'BOOT-INF/classes/static/docs' // 애플리케이션 내에서 /docs 경로로 접근 가능
     }
-    from(apiDocsDir) {
-        into 'BOOT-INF/classes/static/swagger' // Swagger 파일 포함
-    }
-}
-
-springBoot {
-    buildInfo()
 }
