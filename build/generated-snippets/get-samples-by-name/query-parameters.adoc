@@ -2,6 +2,6 @@
 |Parameter|Description
 
 |`+name+`
-|Name to search for
+|검색할 이름
 
 |===

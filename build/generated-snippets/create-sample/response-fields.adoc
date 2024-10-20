@@ -3,14 +3,14 @@
 
 |`+status+`
 |`+Number+`
-|Status code of the response
+|응답 상태 코드
 
 |`+message+`
 |`+String+`
-|Optional message
+|응답 메시지
 
 |`+data+`
 |`+Null+`
-|Sample creation result message, can be null
+|샘플 생성 결과 데이터, null일 수 있음
 
 |===

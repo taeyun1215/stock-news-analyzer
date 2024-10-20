@@ -3,6 +3,6 @@
 |Parameter|Description
 
 |`+id+`
-|The ID of the Sample to retrieve
+|조회할 샘플의 ID
 
 |===

@@ -3,10 +3,10 @@
 
 |`+name+`
 |`+String+`
-|Name of the Sample
+|샘플 이름
 
 |`+description+`
 |`+String+`
-|Description of the Sample
+|샘플 설명
 
 |===

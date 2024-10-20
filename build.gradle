@@ -66,12 +66,12 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     // SpringDoc OpenAPI (Swagger) 통합
-    implementation 'org.springdoc:springdoc-openapi-ui:2.2.0'
-    implementation 'org.springdoc:springdoc-openapi-webmvc-core:2.2.0'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+    implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.7.0'
 
     // REST Docs와 OpenAPI 스펙 생성을 위한 의존성 추가
-    testImplementation 'com.epages:restdocs-api-spec:0.17.2'
-    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.2'
+    testImplementation 'com.epages:restdocs-api-spec:0.17.1'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.1'
 }
 
 tasks.named('test') {
@@ -104,7 +104,7 @@ openapi3 {
     description = 'spring-starter-kit document swagger ui.'
     version = "${project.version}"
     format = 'yaml'
-    outputDir = apiDocsDir  // 출력 디렉토리 설정
+    outputDirectory = apiDocsDir  // 출력 디렉토리 설정
 }
 
 tasks.register('copyOpenApiSpec', Copy) {

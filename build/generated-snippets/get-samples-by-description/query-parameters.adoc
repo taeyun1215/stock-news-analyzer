@@ -2,6 +2,6 @@
 |Parameter|Description
 
 |`+description+`
-|Description to search for
+|검색할 설명
 
 |===

@@ -3,22 +3,22 @@
 
 |`+status+`
 |`+Number+`
-|Status code of the response
+|응답 상태 코드
 
 |`+message+`
 |`+String+`
-|Optional message
+|응답 메시지
 
 |`+data.id+`
 |`+Number+`
-|ID of the Sample
+|샘플 ID
 
 |`+data.name+`
 |`+String+`
-|Name of the Sample
+|샘플 이름
 
 |`+data.description+`
 |`+String+`
-|Description of the Sample
+|샘플 설명
 
 |===
