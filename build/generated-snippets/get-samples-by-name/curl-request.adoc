@@ -1,4 +1,0 @@
-[source,bash]
-----
-$ curl 'http://localhost:8080/api/v1/samples/searchByName?name=Sample+Name' -i -X GET
-----

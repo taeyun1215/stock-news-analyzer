@@ -1,4 +1,0 @@
-[source,json,options="nowrap"]
-----
-{"status":200,"message":null,"data":{"id":1,"name":"Sample Name","description":"Sample Description"}}
-----

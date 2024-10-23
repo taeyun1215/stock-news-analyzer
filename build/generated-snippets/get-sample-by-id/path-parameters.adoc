@@ -1,8 +1,0 @@
-.+/api/v1/samples/{id}+
-|===
-|Parameter|Description
-
-|`+id+`
-|조회할 샘플의 ID
-
-|===

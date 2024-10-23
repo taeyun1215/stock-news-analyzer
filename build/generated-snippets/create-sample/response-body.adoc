@@ -1,4 +1,0 @@
-[source,json,options="nowrap"]
-----
-{"status":201,"message":"Sample created successfully","data":null}
-----

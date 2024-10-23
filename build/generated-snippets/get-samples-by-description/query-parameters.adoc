@@ -1,7 +1,0 @@
-|===
-|Parameter|Description
-
-|`+description+`
-|검색할 설명
-
-|===
