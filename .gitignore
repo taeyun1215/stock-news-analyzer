@@ -56,5 +56,3 @@
 # Docker 관련 파일 (필요에 따라 포함 가능)
 #docker-compose.yml
 #Dockerfile
-
-# 기타 불필요한 파일 제외
