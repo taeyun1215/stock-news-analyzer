@@ -1,0 +1,18 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  sql:
+    init:
+      mode: never
+  datasource:
+    url: ${DB__URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  #    defer-datasource-initialization: never
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
