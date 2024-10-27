@@ -1,18 +1,18 @@
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: dev
   sql:
     init:
       mode: never
   datasource:
-    url: ${DB__URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${DEV_DB_URL}
+    username: ${DEV_DB_USERNAME}
+    password: ${DEV_DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: none
   #    defer-datasource-initialization: never
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    host: ${DEV_REDIS_HOST}
+    port: ${DEV_REDIS_PORT}
