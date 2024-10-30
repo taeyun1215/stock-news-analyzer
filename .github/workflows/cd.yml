@@ -1,0 +1,54 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Development Server
+        if: github.ref == 'refs/heads/dev'
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.DEV_SERVER_USER }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: ${{ secrets.DEV_SERVER_SSH_PORT }}
+          envs:
+            DEV_SPRING_IMAGE: your-dockerhub-username/spring-starter-kit:${{ github.ref_name }}
+          script: |
+            cd /path/to/your/docker-compose/files
+            export DEV_SPRING_IMAGE=${DEV_SPRING_IMAGE}
+            docker-compose -f docker-compose.yml -f docker-compose.dev.yml pull spring-starter-kit
+            docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d spring-starter-kit
+
+      - name: Deploy to Production Server
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.PROD_SERVER_HOST }}
+          username: ${{ secrets.PROD_SERVER_USER }}
+          key: ${{ secrets.PROD_SERVER_SSH_KEY }}
+          port: ${{ secrets.PROD_SERVER_SSH_PORT }}
+          envs:
+            PROD_SPRING_IMAGE: your-dockerhub-username/spring-starter-kit:${{ github.ref_name }}
+            PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
+            PROD_DB_USERNAME: ${{ secrets.PROD_DB_USERNAME }}
+            PROD_DB_PASSWORD: ${{ secrets.PROD_DB_PASSWORD }}
+            PROD_REDIS_HOST: ${{ secrets.PROD_REDIS_HOST }}
+            PROD_REDIS_PORT: ${{ secrets.PROD_REDIS_PORT }}
+          script: |
+            cd /path/to/your/docker-compose/files
+            export PROD_SPRING_IMAGE=${PROD_SPRING_IMAGE}
+            export PROD_DB_URL=${PROD_DB_URL}
+            export PROD_DB_USERNAME=${PROD_DB_USERNAME}
+            export PROD_DB_PASSWORD=${PROD_DB_PASSWORD}
+            export PROD_REDIS_HOST=${PROD_REDIS_HOST}
+            export PROD_REDIS_PORT=${PROD_REDIS_PORT}
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull spring-starter-kit
+            docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d spring-starter-kit
