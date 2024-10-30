@@ -2,59 +2,17 @@ version: '3'
 
 services:
   spring-starter-kit:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: spring-starter-kit
+    image: ${PROD_SPRING_IMAGE}
+    container_name: prod-spring-starter-kit-container
     ports:
       - "8080:8080"
-    volumes:
-      - /secret/spring-starter-kit/application-prod.yml:/app/config/application-prod.yml
     environment:
-      DB_URL: jdbc:mariadb://mariadb:3306/spring-starter-kit
-      DB_USERNAME: root
-      DB_PASSWORD: password
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: ${PROD_DB_USERNAME}
+      DB_USERNAME: ${PROD_DB_USERNAME}
+      DB_PASSWORD: ${PROD_DB_PASSWORD}
+      REDIS_HOST: ${PROD_REDIS_HOST}
+      REDIS_PORT: ${PROD_REDIS_PORT}
     depends_on:
       - mariadb
       - redis
-
-  mariadb:
-    image: mariadb:latest
-    container_name: mariadb
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: spring-starter-kit
-    volumes:
-      - mariadb_data:/var/lib/mysql
-
-  redis:
-    image: redis:latest
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - secret/spring-starter-kit/prometheus.yml:/etc/prometheus/prometheus.yml
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    depends_on:
-      - prometheus
-
-volumes:
-  mariadb_data:
-  redis_data:

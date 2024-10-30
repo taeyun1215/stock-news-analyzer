@@ -1,25 +1,6 @@
 version: '3'
 
 services:
-  spring-starter-kit:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: spring-starter-kit
-    ports:
-      - "8080:8080"
-    volumes:
-      - /secret/spring-starter-kit/application-prod.yml:/app/config/application-prod.yml
-    environment:
-      DB_URL: jdbc:mariadb://mariadb:3306/spring-starter-kit
-      DB_USERNAME: root
-      DB_PASSWORD: password
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    depends_on:
-      - mariadb
-      - redis
-
   mariadb:
     image: mariadb:latest
     container_name: mariadb
@@ -45,7 +26,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - secret/spring-starter-kit/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /secret/spring-starter-kit/prometheus.yml:/etc/prometheus/prometheus.yml
 
   grafana:
     image: grafana/grafana:latest
