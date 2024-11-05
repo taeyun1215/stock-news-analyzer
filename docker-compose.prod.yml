@@ -28,7 +28,7 @@ services:
       MYSQL_USER: ${PROD_DB_USERNAME}
       MYSQL_PASSWORD: ${PROD_DB_PASSWORD}
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - prod_mariadb_data:/var/lib/mysql
 
   redis:
     image: redis:latest
@@ -36,8 +36,8 @@ services:
     ports:
       - "${PROD_REDIS_PORT}:6379"
     volumes:
-      - redis_data:/data
+      - prod_redis_data:/data
 
 volumes:
-  mariadb_data:
-  redis_data:
+  prod_mariadb_data:
+  prod_redis_data:

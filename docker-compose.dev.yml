@@ -23,12 +23,12 @@ services:
     ports:
       - "${DEV_DB_PORT}:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${DEV_DB_PASSWORD}
       MYSQL_DATABASE: ${DEV_MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DEV_DB_ROOT_PASSWORD}
       MYSQL_USER: ${DEV_DB_USERNAME}
       MYSQL_PASSWORD: ${DEV_DB_PASSWORD}
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - dev_mariadb_data:/var/lib/mysql
 
   redis:
     image: redis:latest
@@ -36,8 +36,8 @@ services:
     ports:
       - "${DEV_REDIS_PORT}:6379"
     volumes:
-      - redis_data:/data
+      - dev_redis_data:/data
 
 volumes:
-  mariadb_data:
-  redis_data:
+  dev_mariadb_data:
+  dev_redis_data:
