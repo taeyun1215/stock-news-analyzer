@@ -8,27 +8,27 @@ services:
       - "${PROD_SPRING_PORT}:8080"
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      DB_URL: jdbc:mariadb://prod-mariadb-container:3306/${PROD_MYSQL_DATABASE}
+      DB_URL: jdbc:mysql://prod-mysql-container:3306/${PROD_MYSQL_DATABASE}
       DB_USERNAME: ${PROD_MYSQL_USERNAME}
       DB_PASSWORD: ${PROD_MYSQL_PASSWORD}
       REDIS_HOST: prod-redis-container
       REDIS_PORT: ${PROD_REDIS_PORT}
     depends_on:
-      - mariadb
+      - mysql
       - redis
 
-  mariadb:
-    image: mariadb:latest
-    container_name: prod-mariadb-container
+  mysql:
+    image: mysql:latest
+    container_name: prod-mysql-container
     ports:
-      - "${PROD_DB_PORT}:3306"
+      - "${PROD_MYSQL_PORT}:3306"
     environment:
       MYSQL_DATABASE: ${PROD_MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${PROD_MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${PROD_MYSQL_USERNAME}
       MYSQL_PASSWORD: ${PROD_MYSQL_PASSWORD}
     volumes:
-      - prod_mariadb_data:/var/lib/mysql
+      - prod_mysql_data:/var/lib/mysql
 
   redis:
     image: redis:latest
@@ -39,5 +39,5 @@ services:
       - prod_redis_data:/data
 
 volumes:
-  prod_mariadb_data:
+  prod_mysql_data:
   prod_redis_data:
