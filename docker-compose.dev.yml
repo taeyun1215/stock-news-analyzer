@@ -8,27 +8,27 @@ services:
       - "${DEV_SPRING_PORT}:8080"
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      DB_URL: jdbc:mariadb://dev-mariadb-container:3306/${DEV_MYSQL_DATABASE}
-      DB_USERNAME: ${DEV_DB_USERNAME}
-      DB_PASSWORD: ${DEV_DB_PASSWORD}
+      DB_URL: jdbc:mysql://dev-mysql-container:3306/${DEV_MYSQL_DATABASE}
+      DB_USERNAME: ${DEV_MYSQL_USERNAME}
+      DB_PASSWORD: ${DEV_MYSQL_PASSWORD}
       REDIS_HOST: dev-redis-container
       REDIS_PORT: ${DEV_REDIS_PORT}
     depends_on:
-      - mariadb
+      - mysql
       - redis
 
-  mariadb:
-    image: mariadb:latest
-    container_name: dev-mariadb-container
+  mysql:
+    image: mysql:latest
+    container_name: dev-mysql-container
     ports:
-      - "${DEV_DB_PORT}:3306"
+      - "${DEV_MYSQL_PORT}:3306"
     environment:
       MYSQL_DATABASE: ${DEV_MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DEV_DB_ROOT_PASSWORD}
-      MYSQL_USER: ${DEV_DB_USERNAME}
-      MYSQL_PASSWORD: ${DEV_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DEV_MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${DEV_MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${DEV_MYSQL_PASSWORD}
     volumes:
-      - dev_mariadb_data:/var/lib/mysql
+      - dev_mysql_data:/var/lib/mysql
 
   redis:
     image: redis:latest
@@ -39,5 +39,5 @@ services:
       - dev_redis_data:/data
 
 volumes:
-  dev_mariadb_data:
+  dev_mysql_data:
   dev_redis_data:
