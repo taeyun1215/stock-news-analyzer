@@ -8,11 +8,11 @@ services:
       - "${PROD_SPRING_PORT}:8080"
     environment:
       SPRING_PROFILES_ACTIVE: prod
-      DB_URL: jdbc:mysql://prod-mysql-container:3306/${PROD_MYSQL_DATABASE}
-      DB_USERNAME: ${PROD_MYSQL_USERNAME}
-      DB_PASSWORD: ${PROD_MYSQL_PASSWORD}
-      REDIS_HOST: prod-redis-container
-      REDIS_PORT: ${PROD_REDIS_PORT}
+      PROD_DEV_MYSQL_DATABASE_URL: jdbc:mysql://prod-mysql-container:3306/${PROD_MYSQL_DATABASE}
+      PROD_MYSQL_USERNAME: ${PROD_MYSQL_USERNAME}
+      PROD_MYSQL_PASSWORD: ${PROD_MYSQL_PASSWORD}
+      PROD_REDIS_HOST: prod-redis-container
+      PROD_REDIS_PORT: ${PROD_REDIS_PORT}
     depends_on:
       - mysql
       - redis
@@ -23,10 +23,10 @@ services:
     ports:
       - "${PROD_MYSQL_PORT}:3306"
     environment:
-      MYSQL_DATABASE: ${PROD_MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${PROD_MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${PROD_MYSQL_USERNAME}
-      MYSQL_PASSWORD: ${PROD_MYSQL_PASSWORD}
+      PROD_MYSQL_DATABASE: ${PROD_MYSQL_DATABASE}
+      PROD_MYSQL_ROOT_PASSWORD: ${PROD_MYSQL_ROOT_PASSWORD}
+      PROD_MYSQL_USERNAME: ${PROD_MYSQL_USERNAME}
+      PROD_MYSQL_PASSWORD: ${PROD_MYSQL_PASSWORD}
     volumes:
       - prod_mysql_data:/var/lib/mysql
 

@@ -8,11 +8,11 @@ services:
       - "${DEV_SPRING_PORT}:8080"
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      DB_URL: jdbc:mysql://dev-mysql-container:3306/${DEV_MYSQL_DATABASE}
-      DB_USERNAME: ${DEV_MYSQL_USERNAME}
-      DB_PASSWORD: ${DEV_MYSQL_PASSWORD}
-      REDIS_HOST: dev-redis-container
-      REDIS_PORT: ${DEV_REDIS_PORT}
+      DEV_MYSQL_DATABASE_URL: jdbc:mysql://dev-mysql-container:3306/${DEV_MYSQL_DATABASE}
+      DEV_MYSQL_USERNAME: ${DEV_MYSQL_USERNAME}
+      DEV_MYSQL_PASSWORD: ${DEV_MYSQL_PASSWORD}
+      DEV_REDIS_HOST: dev-redis-container
+      DEV_REDIS_PORT: ${DEV_REDIS_PORT}
     depends_on:
       - mysql
       - redis
@@ -23,10 +23,10 @@ services:
     ports:
       - "${DEV_MYSQL_PORT}:3306"
     environment:
-      MYSQL_DATABASE: ${DEV_MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DEV_MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${DEV_MYSQL_USERNAME}
-      MYSQL_PASSWORD: ${DEV_MYSQL_PASSWORD}
+      DEV_MYSQL_DATABASE: ${DEV_MYSQL_DATABASE}
+      DEV_MYSQL_ROOT_PASSWORD: ${DEV_MYSQL_ROOT_PASSWORD}
+      DEV_MYSQL_USER: ${DEV_MYSQL_USERNAME}
+      DEV_MYSQL_PASSWORD: ${DEV_MYSQL_PASSWORD}
     volumes:
       - dev_mysql_data:/var/lib/mysql
 

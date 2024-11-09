@@ -8,7 +8,7 @@ spring:
       data-locations: classpath:db/migration/data.sql
       schema-locations: classpath:db/migration/schema.sql
   datasource:
-    url: jdbc:mariadb://localhost:3306/spring-starter-kit
+    url: jdbc:mysql://localhost:3306/spring-starter-kit
     username: root
     password: password
   jpa:
