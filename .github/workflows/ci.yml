@@ -28,8 +28,8 @@ jobs:
 
       - name: Build and push Docker image
         env:
-          IMAGE_NAME: your-dockerhub-username/spring-starter-kit
-          IMAGE_TAG: ${{ github.ref_name }}
+          IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/spring-starter-kit
+          IMAGE_TAG: ${{ github.ref_name == 'main' && 'prod' || github.ref_name == 'dev' && 'dev' || 'latest' }}
         run: |
           docker build -t $IMAGE_NAME:$IMAGE_TAG .
           docker push $IMAGE_NAME:$IMAGE_TAG

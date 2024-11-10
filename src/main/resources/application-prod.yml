@@ -6,12 +6,12 @@ spring:
     init:
       mode: never
   datasource:
-    url: ${PROD_DB_URL}
-    username: ${PROD_DB_USERNAME}
-    password: ${PROD_DB_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: none
+    url: ${PROD_MYSQL_DATABASE_URL}
+    username: ${PROD_MYSQL_USERNAME}
+    password: ${PROD_MYSQL_PASSWORD}
   redis:
     host: ${PROD_REDIS_HOST}
     port: ${PROD_REDIS_PORT}
+  jpa:
+    hibernate:
+      ddl-auto: none
