@@ -35,16 +35,21 @@ jobs:
             cd /path/to/your/docker-compose/files
             export DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
             export DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+            
             export SPRING_IMAGE_TAG=${SPRING_IMAGE_TAG}
             export DEV_SPRING_PORT=${DEV_SPRING_PORT}
+            
             export DEV_MYSQL_DATABASE_URL=${DEV_MYSQL_DATABASE_URL}
             export DEV_MYSQL_USERNAME=${DEV_MYSQL_USERNAME}
             export DEV_MYSQL_PASSWORD=${DEV_MYSQL_PASSWORD}
             export DEV_MYSQL_DATABASE=${DEV_MYSQL_DATABASE}
             export DEV_MYSQL_ROOT_PASSWORD=${DEV_MYSQL_ROOT_PASSWORD}
             export DEV_MYSQL_PORT=${DEV_MYSQL_PORT}
+            
             export DEV_REDIS_PORT=${DEV_REDIS_PORT}
             # DEV_REDIS_HOST는 하드코딩되어 있으므로 export하지 않아도 됩니다.
+            
+            echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
             docker-compose -f docker-compose.yml -f docker-compose.dev.yml pull spring-starter-kit
             docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
@@ -72,16 +77,20 @@ jobs:
             cd /path/to/your/docker-compose/files
             export DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
             export DOCKERHUB_PASSWORD=${DOCKERHUB_PASSWORD}
+            
             export SPRING_IMAGE_TAG=${SPRING_IMAGE_TAG}
             export PROD_SPRING_PORT=${PROD_SPRING_PORT}
+            
             export PROD_MYSQL_DATABASE_URL=${PROD_MYSQL_DATABASE_URL}
             export PROD_MYSQL_USERNAME=${PROD_MYSQL_USERNAME}
             export PROD_MYSQL_PASSWORD=${PROD_MYSQL_PASSWORD}
             export PROD_MYSQL_DATABASE=${PROD_MYSQL_DATABASE}
             export PROD_MYSQL_ROOT_PASSWORD=${PROD_MYSQL_ROOT_PASSWORD}
             export PROD_MYSQL_PORT=${PROD_MYSQL_PORT}
+            
             export PROD_REDIS_PORT=${PROD_REDIS_PORT}
             # PROD_REDIS_HOST는 하드코딩되어 있으므로 export하지 않아도 됩니다.
+            
+            echo "${DOCKERHUB_PASSWORD}" | docker login -u "${DOCKERHUB_USERNAME}" --password-stdin
             docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull spring-starter-kit
             docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-
