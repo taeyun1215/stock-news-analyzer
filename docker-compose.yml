@@ -1,5 +1,8 @@
 version: '3'
 
+networks:
+  spring-starter-kit-network:
+
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -8,6 +11,8 @@ services:
       - "9090:9090"
     volumes:
       - /secret/spring-starter-kit/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - spring-starter-kit-network
 
   grafana:
     image: grafana/grafana:latest
@@ -16,3 +21,5 @@ services:
       - "3000:3000"
     depends_on:
       - prometheus
+    networks:
+      - spring-starter-kit-network
