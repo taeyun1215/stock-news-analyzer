@@ -16,12 +16,14 @@ services:
     depends_on:
       - mysql
       - redis
+    networks:
+      - spring-starter-kit-network
 
   mysql:
     image: mysql:latest
     container_name: prod-mysql-container
     ports:
-      - "${PROD_MYSQL_PORT}:3306"
+      - "${PROD_MYSQL_PORT}:3306"5
     environment:
       PROD_MYSQL_DATABASE: ${PROD_MYSQL_DATABASE}
       PROD_MYSQL_ROOT_PASSWORD: ${PROD_MYSQL_ROOT_PASSWORD}
@@ -29,6 +31,8 @@ services:
       PROD_MYSQL_PASSWORD: ${PROD_MYSQL_PASSWORD}
     volumes:
       - prod_mysql_data:/var/lib/mysql
+    networks:
+      - spring-starter-kit-network
 
   redis:
     image: redis:latest
@@ -37,7 +41,13 @@ services:
       - "${PROD_REDIS_PORT}:6379"
     volumes:
       - prod_redis_data:/data
+    networks:
+      - spring-starter-kit-network
 
 volumes:
   prod_mysql_data:
   prod_redis_data:
+
+networks:
+  spring-starter-kit-network:
+    external: true

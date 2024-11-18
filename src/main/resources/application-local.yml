@@ -1,20 +1,16 @@
 spring:
-  config:
-    activate:
-      on-profile: local
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:db/migration/data.sql
-      schema-locations: classpath:db/migration/schema.sql
-  datasource:
-    url: jdbc:mysql://localhost:3306/spring-starter-kit
-    username: root
-    password: password
-  jpa:
-    hibernate:
-      ddl-auto: none # 초기에 많이 변경되는 경우엔 update도 많이 사용함.
-#    defer-datasource-initialization: true
-  redis:
-    host: localhost
-    port: 6379
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/stock_news_collect_db
+
+  main:
+    allow-bean-definition-overriding: true
+
+newsapi:
+  key: ac210c6254fc4b089710ed8930819655
+  url: https://newsapi.org/v2/everything
+
+logging:
+  level:
+    root: INFO
+    com.devty.stocknewsanalyzer: DEBUG

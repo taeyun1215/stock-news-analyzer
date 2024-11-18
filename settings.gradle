@@ -6,4 +6,4 @@ pluginManagement {
 	}
 }
 
-rootProject.name = 'spring-starter-kit'
+rootProject.name = 'stock-news-analyzer'

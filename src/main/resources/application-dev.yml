@@ -9,9 +9,6 @@ spring:
     url: ${DEV_MYSQL_DATABASE_URL}
     username: ${DEV_MYSQL_USERNAME}
     password: ${DEV_MYSQL_PASSWORD}
-  redis:
-    host: ${DEV_REDIS_HOST}
-    port: ${DEV_REDIS_PORT}
   jpa:
     hibernate:
       ddl-auto: none
